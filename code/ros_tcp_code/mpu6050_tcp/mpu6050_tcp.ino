@@ -6,12 +6,21 @@
 // Adafruit Unified Sensor
 // Adafruit Bus IO
 
-
+#define ROSSERIAL_ARDUINO_TCP
+#include "WiFi.h"
 #include <ros.h>
 #include <Wire.h>
 #include <std_msgs/String.h>
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
+
+
+
+IPAddress server(192,168,0,238);
+uint16_t serverPort = 11411;
+const char*  ssid = "pratik";
+const char*  password = "Pratikwalunj@7229";
+
 
 std_msgs::String imu_msg;
 ros::Publisher imu("imu", &imu_msg);
@@ -23,7 +32,8 @@ int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
 Adafruit_MPU6050 mpu;
 
 void setup(void) {
-
+  setupWiFi();
+  nh.getHardware()->setConnection(server, serverPort);
   nh.initNode();
   nh.advertise(imu);
  
@@ -34,7 +44,16 @@ void setup(void) {
   
   delay(100);
 }
+void setupWiFi()
+{  
+   WiFi.begin(ssid, password);
+   while (WiFi.status() != WL_CONNECTED) { delay(500);Serial.print("."); }
+   Serial.print("SSID: ");
+   Serial.println(WiFi.SSID());
+   Serial.print("IP:   ");
+   Serial.println(WiFi.localIP());
 
+}
 void loop() {
   /* Get new sensor events with the readings */
    nh.spinOnce();
