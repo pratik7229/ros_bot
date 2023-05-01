@@ -1,6 +1,3 @@
-#include <ros.h>
-#include <std_msgs/Int16.h>
-
 #define encoder0PinA 18      // encoder 1
 #define encoder0PinB 19
 
@@ -14,18 +11,9 @@ unsigned long previousMillis;
 volatile long encoder0Pos = 0;    // encoder 1
 volatile long encoder1Pos = 0;    // encoder 2
 
-ros::NodeHandle  nh;
-
-std_msgs::Int16 enc_r_msg;
-std_msgs::Int16 enc_l_msg;
-ros::Publisher right_enc("enc_r_values", &enc_r_msg );
-ros::Publisher left_enc("enc_l_values", &enc_l_msg );
 
 void setup() {
-  nh.initNode();
-  nh.advertise(right_enc);
-  nh.advertise(left_enc);
- 
+  Serial.begin(9600);
   pinMode(encoder0PinA, INPUT_PULLUP);    // encoder pins
   pinMode(encoder0PinB, INPUT_PULLUP);
 
@@ -36,15 +24,20 @@ void setup() {
 
   attachInterrupt(digitalPinToInterrupt(encoder1PinA), doEncoderC, CHANGE);
   attachInterrupt(digitalPinToInterrupt(encoder1PinB), doEncoderD, CHANGE); 
-  
+
 }
 
 
 void loop() {
-  right_enc.publish(&enc_r_msg);
-  left_enc.publish(&enc_l_msg);
-  nh.spinOnce();
-  
+  currentMillis = millis();   // bookmark the time 
+  if (currentMillis - previousMillis >= 10) {  // start timed loop for everything else
+         previousMillis = currentMillis;
+         Serial.print(encoder0Pos);
+         Serial.print(",");
+         Serial.println(encoder1Pos);
+  }
+  // put your main code here, to run repeatedly:
+
 }
 
 // ************** encoders interrupts **************
@@ -74,7 +67,7 @@ void doEncoderA(){
       encoder0Pos = encoder0Pos - 1;          // CCW
     }
   }
- enc_r_msg.data=encoder0Pos
+ 
 }
 
 void doEncoderB(){  
@@ -100,7 +93,7 @@ void doEncoderB(){
     }
   }
   
-enc_r_msg.data=encoder0Pos
+
 }
 
 // ************** encoder 2 *********************
@@ -127,7 +120,7 @@ void doEncoderC(){
       encoder1Pos = encoder1Pos + 1;          // CCW
     }
   }
- enc_l_msg.data=encoder1Pos
+ 
 }
 
 void doEncoderD(){  
@@ -152,6 +145,6 @@ void doEncoderD(){
       encoder1Pos = encoder1Pos + 1;          // CCW
     }
   }
-  enc_l_msg.data=encoder1Pos
+  
 
 }
