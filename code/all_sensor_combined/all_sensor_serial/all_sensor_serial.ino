@@ -33,8 +33,8 @@ ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel", &cmdVel_to_pwm_cb );
 
 std_msgs::Int16 enc_r_msg;
 std_msgs::Int16 enc_l_msg;
-ros::Publisher right_enc("enc_r_values", &enc_r_msg );
-ros::Publisher left_enc("enc_l_values", &enc_l_msg );
+ros::Publisher right_enc("rwheel", &enc_r_msg );
+ros::Publisher left_enc("lwheel", &enc_l_msg );
 std_msgs::Int16 ultrasonic_msg;
 ros::Publisher ultrasonic_node("ultrasonic_values", &ultrasonic_msg );
 

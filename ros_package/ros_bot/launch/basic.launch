@@ -1,0 +1,9 @@
+<launch>
+
+    <node pkg="ros_bot" name="esp32_odom_publisher" type="diff_tf_odom.py" />
+
+    <node pkg="rviz" name="rviz_node" type="rviz" />
+
+    <node pkg="rosserial_python" name="wifi_esp32_communication_node" type="serial_node.py" args="/dev/ttyUSB0" output="screen"/>
+
+</launch>
