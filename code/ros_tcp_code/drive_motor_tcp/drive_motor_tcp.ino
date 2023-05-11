@@ -6,12 +6,12 @@
 
 
 const uint8_t R_PWM =  12;
-const uint8_t R_BACK = 14;
-const uint8_t R_FORW = 27;
+const uint8_t R_BACK = 27;
+const uint8_t R_FORW = 14;
 
 const uint8_t L_PWM =  33;
-const uint8_t L_BACK = 25;
-const uint8_t L_FORW = 26;
+const uint8_t L_BACK = 26;
+const uint8_t L_FORW = 25;
 
 const uint8_t channel_L =0;
 const uint8_t channel_R= 1;
@@ -19,7 +19,7 @@ const uint8_t channel_R= 1;
 float left_wheel;
 float right_wheel;
 
-IPAddress server(192,168,0,237);
+IPAddress server(192,168,0,238);
 uint16_t serverPort = 11411;
 const char*  ssid = "pratik";
 const char*  password = "Pratikwalunj@7229";
